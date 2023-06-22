@@ -1,14 +1,11 @@
 import React, {createContext, useState, useEffect, useContext} from 'react'
 import * as auth from '../services/auth'
 
-//interface para tipar o conteudo 
-//interface User, para definir o objeto
 interface User{
     name: string;
     email: string;
 }
 
-//interface AuthContextData, para definir o tipo de conteudo do Context
 interface AuthContexData{
     signed: boolean;
     user: User | null;
@@ -19,10 +16,8 @@ interface AuthContexData{
 
 /************ */
 
-//definindo o contexto, e passando a interface como tipo <Tipo>
 const AuthContext = createContext<AuthContexData>({} as AuthContexData)
 
-//Definindo o provider que ficara por volta da aplicacao -- o children são os filhos que ficaram por dentro desse componente, no App.tsx
 export const AuthProvider: React.FC = ({children}) => {
     const [user, setUser] = useState<User | null>(null)
     const [load, setLoad] = useState<boolean>(false)
@@ -55,19 +50,14 @@ export const AuthProvider: React.FC = ({children}) => {
     }
 
     return(
-        //ao usar !! transforma a variavel em boolean, mesmo que usar Boolean(user)
-        //no value sao enviados as variaveis ou funcoes que poderam ser usadas nos componentes filhos
         <AuthContext.Provider value={{signed: !!user, signIn, user, logOut, load}}>
             {children}
         </ AuthContext.Provider>
     )
 }
 
-
-//criando um hook para usar nos componentes
 export function useAuth(){
     const context = useContext(AuthContext)
 
-    //dentro do context de rotorno estao as variaveis que podem ser acessadas usando o useAuth
     return context
 }
